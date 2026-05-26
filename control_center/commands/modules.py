@@ -1,4 +1,4 @@
-def show_modules(context, registry):
+def show_modules(context, registry, args):
     print("ACTIVE MODULES")
         
     for module in sorted(context.modules):

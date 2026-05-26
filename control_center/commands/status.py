@@ -1,4 +1,4 @@
-def show_status(context, registry):
+def show_status(context, registry, args):
     system_status = "online" if context.running else "offline"
         
     print("SYSTEM STATUS")

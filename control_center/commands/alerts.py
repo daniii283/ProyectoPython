@@ -1,9 +1,9 @@
-def register_alert(context, registry):
+def register_alert(context, registry, args):
     context.alerts += 1
     print(f"Alerta registrada. Alertas activas: {context.alerts}")
     
     
-def reset_alerts(context, registry):
+def reset_alerts(context, registry, args):
     if context.alerts == 0:
         print("No hay alertas activas.")
         return

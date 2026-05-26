@@ -29,17 +29,20 @@ class ControlCenterApp:
         print("Type 'help' to see available commands.")
 
         while self.context.running:
-            raw_comando = input(f"{self.context.system_name} > ")
-            self.process_command(raw_comando)
+            raw_command = input(f"{self.context.system_name} > ")
+            self.process_command(raw_command)
             
     def process_command(self, raw_command):
-        command = raw_command.lower().strip()
-        if not command:
+        parts = raw_command.lower().split()
+        if not parts:
+            print("Debes ingresar un comando")
             return
+        command = parts[0]
+        args = parts[1:]
         command_info = self.commands.get(command)
         if command_info is None:
             print("Comando desconocido")
             return
         handler = command_info["handler"]
-        handler(self.context, self.commands)
+        handler(self.context, self.commands, args)
         

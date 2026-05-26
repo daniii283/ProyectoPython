@@ -1,4 +1,4 @@
-def run_diagnostics(context, registry):
+def run_diagnostics(context, registry, args):
     modules_count = len(context.modules)
     if context.alerts == 0:
         result = "nominal"
