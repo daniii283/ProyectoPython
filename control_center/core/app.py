@@ -1,19 +1,10 @@
 import os
+from control_center.core.context import SystemContext
 
 class ControlCenterApp:
 
     def __init__(self):
-        self.running = True
-        self.system_name = "NEXUS"
-        self.version = "0.1.0"
-        self.mode = "CLI"
-        self.core_status = "stable"
-        self.alerts = 0
-        self.modules =  {
-            "core": "online",
-            "terminal": "online",
-            "diagnostics": "standby"
-        }
+        self.context = SystemContext()
         self.commands = {
             "help": {
                 "description": "muestra esta ayuda",
@@ -53,11 +44,11 @@ class ControlCenterApp:
         
         
     def run(self):
-        print(f"{self.system_name} Control Center v{self.version}")
+        print(f"{self.context.system_name} Control Center v{self.context.version}")
         print("Type 'help' to see available commands.")
 
-        while self.running:
-            comando = input(f"{self.system_name} > ")
+        while self.context.running:
+            comando = input(f"{self.context.system_name} > ")
             self.process_command(comando)
             
     def process_command(self, comando):
@@ -83,37 +74,37 @@ class ControlCenterApp:
             os.system("clear")
             
     def register_alert(self):
-        self.alerts += 1
-        print(f"Alerta registrada. Alertas activas: {self.alerts}")
+        self.context.alerts += 1
+        print(f"Alerta registrada. Alertas activas: {self.context.alerts}")
     
     
     def reset_alerts(self):
-        if self.alerts == 0:
+        if self.context.alerts == 0:
             print("No hay alertas activas.")
             return
-        alertas_antiguas = self.alerts
-        self.alerts = 0
+        alertas_antiguas = self.context.alerts
+        self.context.alerts = 0
         print(f"Se han reiniciado {alertas_antiguas} alerta(s)")
     
     def run_diagnostics(self):
-        modules_count = len(self.modules)
-        if self.alerts == 0:
+        modules_count = len(self.context.modules)
+        if self.context.alerts == 0:
             result = "nominal"
         else:
             result = "attention required"
             
         print("DIAGNOSTICS REPORT")
-        print(f"Core: {self.core_status}")
+        print(f"Core: {self.context.core_status}")
         print(f"Modules checked: {modules_count}")
-        print(f"Alerts active: {self.alerts}")
+        print(f"Alerts active: {self.context.alerts}")
         print(f"Result: {result}")
         
         
     def show_modules(self):
         print("ACTIVE MODULES")
         
-        for module in sorted(self.modules):
-            module_status = self.modules[module]
+        for module in sorted(self.context.modules):
+            module_status = self.context.modules[module]
             print(f"{module:<12}    - {module_status}")
             
     
@@ -127,13 +118,13 @@ class ControlCenterApp:
     
     def show_status(self):
         print("SYSTEM STATUS")
-        print(f"Name: {self.system_name}")
-        print(f"Version: {self.version}")
+        print(f"Name: {self.context.system_name}")
+        print(f"Version: {self.context.version}")
         print("System: online")
-        print(f"Mode: {self.mode}")
-        print(f"Core: {self.core_status}")
-        print(f"Alerts: {self.alerts}")
+        print(f"Mode: {self.context.mode}")
+        print(f"Core: {self.context.core_status}")
+        print(f"Alerts: {self.context.alerts}")
     
     def exit_app(self):
         print("Cerrando sistema...")
-        self.running = False
+        self.context.running = False
