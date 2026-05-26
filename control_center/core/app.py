@@ -42,6 +42,10 @@ class ControlCenterApp:
             "reset-alerts": {
                 "description": "reinicia las alertas activas",
                 "handler": self.reset_alerts
+            },
+            "diagnostics": {
+                "description": "ejecuta un diagnostico básico del sistema",
+                "handler": self.run_diagnostics  
             }
 
         }
@@ -87,12 +91,23 @@ class ControlCenterApp:
         if self.alerts == 0:
             print("No hay alertas activas.")
             return
-
-
         alertas_antiguas = self.alerts
         self.alerts = 0
         print(f"Se han reiniciado {alertas_antiguas} alerta(s)")
     
+    def run_diagnostics(self):
+        modules_count = len(self.modules)
+        if self.alerts == 0:
+            result = "nominal"
+        else:
+            result = "attention required"
+            
+        print("DIAGNOSTICS REPORT")
+        print(f"Core: {self.core_status}")
+        print(f"Modules checked: {modules_count}")
+        print(f"Alerts active: {self.alerts}")
+        print(f"Result: {result}")
+        
         
     def show_modules(self):
         print("ACTIVE MODULES")
