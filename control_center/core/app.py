@@ -6,6 +6,14 @@ class ControlCenterApp:
         self.running = True
         self.system_name = "NEXUS"
         self.version = "0.1.0"
+        self.mode = "CLI"
+        self.core_status = "stable"
+        self.alerts = 0
+        self.modules =  {
+            "core": "online",
+            "terminal": "online",
+            "diagnostics": "standby"
+        }
         self.commands = {
             "help": {
                 "description": "muestra esta ayuda",
@@ -26,13 +34,14 @@ class ControlCenterApp:
             "modules": {
                 "description": "muestra los módulos del sistema",
                 "handler": self.show_modules
+            },
+            "alert": {
+                "description": "registra una nueva alerta",
+                "handler": self.register_alert
             }
-        } 
-        self.modules =  {
-            "core": "online",
-            "terminal": "online",
-            "diagnostic": "stanby"
         }
+
+        
         
     def run(self):
         print(f"{self.system_name} Control Center v{self.version}")
@@ -63,6 +72,18 @@ class ControlCenterApp:
             os.system("cls")
         else:
             os.system("clear")
+            
+    def register_alert(self):
+        self.alerts += 1
+        print(f"Alerta registrada. Alertas activas: {self.alerts}")
+    
+    def show_modules(self):
+        print("ACTIVE MODULES")
+        
+        for module in sorted(self.modules):
+            module_status = self.modules[module]
+            print(f"{module:<12}    - {module_status}")
+            
     
     def show_help(self):
         print("Comandos disponibles: ")
@@ -70,16 +91,16 @@ class ControlCenterApp:
         for command in sorted(self.commands):
             command_info = self.commands[command]
             description = command_info["description"]
-            print(f"{command:<10}   - {description}")
+            print(f"{command:<12}   - {description}")
     
     def show_status(self):
         print("SYSTEM STATUS")
         print(f"Name: {self.system_name}")
         print(f"Version: {self.version}")
         print("System: online")
-        print("Mode: CLI")
-        print("Core: stable")
-        print("Alerts: 0")
+        print(f"Mode: {self.mode}")
+        print(f"Core: {self.core_status}")
+        print(f"Alerts: {self.alerts}")
     
     def exit_app(self):
         print("Cerrando sistema...")
