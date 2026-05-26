@@ -38,7 +38,12 @@ class ControlCenterApp:
             "alert": {
                 "description": "registra una nueva alerta",
                 "handler": self.register_alert
+            },
+            "reset-alerts": {
+                "description": "reinicia las alertas activas",
+                "handler": self.reset_alerts
             }
+
         }
 
         
@@ -77,6 +82,18 @@ class ControlCenterApp:
         self.alerts += 1
         print(f"Alerta registrada. Alertas activas: {self.alerts}")
     
+    
+    def reset_alerts(self):
+        if self.alerts == 0:
+            print("No hay alertas activas.")
+            return
+
+
+        alertas_antiguas = self.alerts
+        self.alerts = 0
+        print(f"Se han reiniciado {alertas_antiguas} alerta(s)")
+    
+        
     def show_modules(self):
         print("ACTIVE MODULES")
         
