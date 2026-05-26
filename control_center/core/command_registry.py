@@ -12,4 +12,4 @@ class CommandRegistry:
         return self._commands.get(name)
     
     def all(self):
-        return self._commands.items()    
+        return self._commands.items()
