@@ -1,48 +1,25 @@
 import os
 from control_center.core.context import SystemContext
+from control_center.core.command_registry import CommandRegistry
 
 class ControlCenterApp:
 
     def __init__(self):
         self.context = SystemContext()
-        self.commands = {
-            "help": {
-                "description": "muestra esta ayuda",
-                "handler": self.show_help
-            },
-            "status": {
-                "description": "muestra el estado del sistema",
-                "handler": self.show_status
-            },
-            "clear": {
-                "description": "limpia la terminal",
-                "handler": self.clear_screen,
-            },
-            "exit": {
-                "description": "cierra el sistema",
-                "handler": self.exit_app
-            },
-            "modules": {
-                "description": "muestra los módulos del sistema",
-                "handler": self.show_modules
-            },
-            "alert": {
-                "description": "registra una nueva alerta",
-                "handler": self.register_alert
-            },
-            "reset-alerts": {
-                "description": "reinicia las alertas activas",
-                "handler": self.reset_alerts
-            },
-            "diagnostics": {
-                "description": "ejecuta un diagnostico básico del sistema",
-                "handler": self.run_diagnostics  
-            }
+        self.commands = CommandRegistry()
+        self.register_commands()
 
-        }
-
-        
-        
+    
+    def register_commands(self):
+        self.commands.register("help", "muestra esta ayuda", self.show_help)
+        self.commands.register("status", "muestra el estado del sistema", self.show_status)
+        self.commands.register("clear", "limpia la terminal", self.clear_screen)
+        self.commands.register("exit", "cierra el sistema", self.exit_app)
+        self.commands.register("modules", "muestra los módulos del sistema", self.show_modules)
+        self.commands.register("alert", "registra una nueva alerta", self.register_alert)
+        self.commands.register("reset-alerts", "reinicia las alertas activas", self.reset_alerts)
+        self.commands.register("diagnostics", "ejecuta un diagnostico básico del sistema", self.run_diagnostics)
+                
     def run(self):
         print(f"{self.context.system_name} Control Center v{self.context.version}")
         print("Type 'help' to see available commands.")
@@ -111,8 +88,7 @@ class ControlCenterApp:
     def show_help(self):
         print("Comandos disponibles: ")
         
-        for command in sorted(self.commands):
-            command_info = self.commands[command]
+        for command, command_info in sorted(self.commands.all()):
             description = command_info["description"]
             print(f"{command:<12}   - {description}")
     
